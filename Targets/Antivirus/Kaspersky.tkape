@@ -1,0 +1,21 @@
+Description: kaspersky_quarantine
+Author: Eric Zimmerman
+Version: 1.0
+Id: 8e0a16da-1568-4c16-bdc5-c1ac7eb3a35c
+RecreateDirectories: true
+Targets:
+    -
+        Name: KLQ File
+        Category: KLQ
+        Path: C:\ProgramData\Kaspersky Lab\*\QB\
+        FileMask: '*.klq'
+    -
+        Name: KLQ frov KVRT single
+        Category: KLQ
+        Path: C:\KVRT*\Quarantine\
+        FileMask: '*.klq'
+    -
+        Name: KLQ frov KVRT single
+        Category: KLQ
+        Path: C:\KVRT*\Quarantine\KVRT*\
+        FileMask: '*.klq'

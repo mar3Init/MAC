@@ -1,0 +1,19 @@
+# Пароль для архива (пустая строка для архива без пароля)
+password: "321"
+zip: true
+
+# Флаги для имен
+need_module_name_string: SysInternals_Autoruns,SysInternals_Handle,SysInternals_PsFile,SysInternals_PsInfo,SysInternals_PsList,SysInternals_PsService,SysInternals_PsTree,LiveResponse_ProcessDetails,Windows_ARPCache,Windows_DNSCache,Windows_IPConfig,Windows_nbtstat_NetBIOSCache,Windows_nbtstat_NetBIOSSessions,Windows_Net_Accounts,Windows_Net_File,Windows_Net_LocalGroup,Windows_Net_Session,Windows_Net_Share,Windows_Net_Start,Windows_Net_Use,Windows_Net_User,Windows_netsh_portproxy,Windows_NetStat,Windows_qwinsta_RDPSessions,Windows_RoutingTable,Windows_schtasks,Windows_SystemInfo
+need_target_name_string: WindowsIndexSearch,USBDevicesLogs,Thumbcache,SRUM,ScheduledTasks,RegistryHives,RecycleBin_InfoFiles,PowerShellConsole,LNKFilesAndJumpLists,FileSystem,EvidenceOfExecution,EventLogs,Sud,Kaspersky,AnyDesk,ExchangeClientAccess,ExchangeCve-2021-26855,ExchangeTransport,OpenSSHClient,OpenSSHServer,WinSCP,Chrome,!BasicCollection,Exchange,MiniTimelineCollection,RegistryHives,ApacheAccessLog,IISLogFiles,NGINXLogs,$J,$MFT,Amcache,CertUtil,MOF,Prefetch,RDPCache,RDPLogs,RecentFileCache,RegistryHivesOther,RegistryHivesSystem,RegistryHivesUser,ScheduledTasks,SDB,SRUM,StartupFolders,Syscache,WER,WindowsTimeline,WindowsDefender,Keepass,KeepassXC,OpenVPNCLient,ProtonVPN,VNCLogs,BrowserCache,Chrome,Firefox,Yandex,Opera,FTPClients,WSL,PowerShellConsole
+
+#Удаление информации после окончания
+remove_after_execute: false
+
+#путь до raw copy
+path_to_rawcopy: ".\\rawccopy-bin\\rawccopy.exe"
+
+#send to server
+send_to_server: false
+send_to_server_ip: "127.0.0.1"
+send_to_server_url: "upload"
+send_to_server_port: 8089
