@@ -16,31 +16,51 @@ type SearchOptions struct {
 	Recursive bool
 }
 
-// isMatch проверяет соответствие имени файла шаблону с поддержкой wildcard
+// Оптимизированная функция isMatch
 func isMatch(pattern, name string) bool {
-	// Заменяем * на .* для регулярного выражения
-	parts := strings.Split(pattern, "*")
-	if len(parts) == 1 {
+	// Оптимизация для случаев без wildcard
+	if !strings.Contains(pattern, "*") {
 		return pattern == name
 	}
 
-	// Проверяем начало
-	if !strings.HasPrefix(name, parts[0]) {
+	// Для простых случаев с одной звездочкой в начале или конце
+	if pattern == "*" {
+		return true
+	}
+
+	if strings.HasPrefix(pattern, "*") && !strings.Contains(pattern[1:], "*") {
+		return strings.HasSuffix(name, pattern[1:])
+	}
+
+	if strings.HasSuffix(pattern, "*") && !strings.Contains(pattern[:len(pattern)-1], "*") {
+		return strings.HasPrefix(name, pattern[:len(pattern)-1])
+	}
+
+	// Разбиваем шаблон на части по *
+	parts := strings.Split(pattern, "*")
+
+	// Проверяем префикс
+	if parts[0] != "" && !strings.HasPrefix(name, parts[0]) {
 		return false
 	}
 
-	// Проверяем конец
-	if !strings.HasSuffix(name, parts[len(parts)-1]) {
+	// Проверяем суффикс
+	if parts[len(parts)-1] != "" && !strings.HasSuffix(name, parts[len(parts)-1]) {
 		return false
 	}
 
-	// Проверяем промежуточные части
+	// Для случаев с несколькими звездочками
 	current := name
-	for _, part := range parts[1 : len(parts)-1] {
+	for _, part := range parts {
+		if part == "" {
+			continue
+		}
+
 		index := strings.Index(current, part)
 		if index == -1 {
 			return false
 		}
+
 		current = current[index+len(part):]
 	}
 

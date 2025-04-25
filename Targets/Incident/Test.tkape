@@ -1,0 +1,11 @@
+Description: Test IOC
+Author: Eric Zimmerman
+Version: 1.0
+Id: c7ac16d0-7374-4680-23eb-d7237591b655
+RecreateDirectories: true
+Targets:
+    -
+        Name: Test file
+        Category: Incident
+        Path: C:\Users\%user%\Desktop\
+        FileMask: 't*.exe'

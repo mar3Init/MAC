@@ -1,0 +1,114 @@
+Description: Mgimo dll
+Author: Eric Zimmerman
+Version: 1.0
+Id: 6afa9b65-8e76-4908-903f-a6c917547a16
+RecreateDirectories: true
+Targets:
+    -
+        Name: Dll System32 1
+        Category: APT
+        Path: C:\Windows\System32\
+        FileMask: helpsvc.dll
+    -
+        Name: Dll System32 2
+        Category: APT
+        Path: C:\Windows\System32\
+        FileMask: mprdimsys.dll 
+    -
+        Name: Dll System32 3
+        Category: APT
+        Path: C:\Windows\System32\
+        FileMask: CMPSpy.dll  
+    -
+        Name: Dll System32 4
+        Category: APT
+        Path: C:\Windows\System32\
+        FileMask: srsvc.dll
+    -
+        Name: Dll System32 5
+        Category: APT
+        Path: C:\Windows\System32\
+        FileMask: Ntmssvc.dll
+    -
+        Name: Dll System32 6
+        Category: APT
+        Path: C:\Windows\System32\
+        FileMask: ntmssvc.dll
+    -
+        Name: Dll System32 7
+        Category: APT
+        Path: C:\Windows\System32\
+        FileMask: srsvc.dll
+    -
+        Name: Public exe
+        Category: APT
+        Path: C:\Users\Public\
+        Recursive: true
+        FileMask: '*.exe'
+    -
+        Name: Temp exe
+        Category: APT
+        Path: C:\Windows\Temp\
+        FileMask: '*.exe'
+    -
+        Name: Perflogs exe
+        Category: APT
+        Path: C:\PerfLogs\
+        FileMask: '*.exe'
+    -
+        Name: IObit exe
+        Category: APT
+        Path: C:\ProgramData\IObit\
+        Recursive: true
+        FileMask: '*'
+    -
+        Name: Ahnlab
+        Category: APT
+        Path: C:\ProgramData\AhnLab\
+        Recursive: true
+        FileMask: '*'
+    -
+        Name: MicrosoftResource
+        Category: APT
+        Path: C:\ProgramData\MicrosoftResource\
+        Recursive: true
+        FileMask: '*'
+    -
+        Name: ProgramData ps1
+        Category: APT
+        Path: C:\ProgramData\
+        FileMask: '*.ps1'
+    -
+        Name: SysWOW64 exe
+        Category: APT
+        Path: C:\Windows\SysWOW64\Com\
+        Recursive: true
+        FileMask: 'Uev*'
+    -
+        Name: SysWOW64 dll
+        Category: APT
+        Path: C:\Windows\SysWOW64\Com\
+        FileMask: LuckyStrike.dll
+    -
+        Name: SysWOW64 hkf
+        Category: APT
+        Path: C:\Windows\SysWOW64\Com\
+        FileMask: '*.hkf'
+    -
+        Name: SysWOW64 conf
+        Category: APT
+        Path: C:\Windows\SysWOW64\Com\
+        FileMask: '*.config'
+    -
+        Name: Task exe
+        Category: APT
+        Path: C:\Windows\Task\
+        FileMask: '*.exe'
+    -
+        Name: Sys Drivers
+        Category: APT
+        Path: C:\Windows\System32\drivers\
+        FileMask: eabwrqbv.sys
+
+# Documentation
+# https://www.youtube.com/watch?v=qjeA1a5n0LQ

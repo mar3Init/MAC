@@ -1,0 +1,146 @@
+Description: Collect VBS and PS1 Scripts
+Author: mars
+Version: 1.3
+Id: 42a2f9dc-a741-48e6-b293-a0509c97bb66
+RecreateDirectories: true
+Targets:
+    -
+        Name: File from Intel
+        Category: Scripts
+        Path: C:\Intel\
+        FileMask: '*'
+        Recursive: true
+        Comment: "Collects all  Intel File"
+    -
+        Name: User User
+        Category: Scripts
+        Path: C:\Users\User\
+        FileMask: '*.'
+        Recursive: true
+        Comment: "Collects allUser User"
+    -
+        Name: User Public
+        Category: Scripts
+        Path: C:\Users\Public\
+        FileMask: '*'
+        Recursive: true
+        Comment: "Collects all  Public"
+    -
+        Name: User Default
+        Category: Scripts
+        Path: C:\Users\Default\
+        FileMask: '*'
+        Recursive: true
+        Comment: "Collects all  Default"
+    -
+        Name: Program Data NetWork
+        Category: Scripts
+        Path: C:\ProgramData\NetWork\
+        FileMask: '*'
+        Recursive: true
+        Comment: "Collects NetWork"
+    -
+        Name: Program Data NetWorks
+        Category: Scripts
+        Path: C:\ProgramData\NetWorks\
+        FileMask: '*'
+        Recursive: true
+        Comment: "Collects NetWorks"
+    -
+        Name: Program Data NetWorks
+        Category: Scripts
+        Path: C:\ProgramData\NetWorks\
+        FileMask: '*'
+        Recursive: true
+        Comment: "Collects NetWorks"
+    -
+        Name: Program Data Group Policy
+        Category: Scripts
+        Path: C:\ProgramData\GroupPolicy\Preference\
+        FileMask: '*'
+        Recursive: true
+        Comment: "Collects Group Policy"
+    -
+        Name: Program Data GameExplorer
+        Category: Scripts
+        Path: C:\ProgramData\Microsoft\Windows\GameExplorer\
+        FileMask: '*'
+        Recursive: true
+        Comment: "Collects GameExplorer"
+    -
+        Name: Program Data DRM
+        Category: Scripts
+        Path: C:\ProgramData\Microsoft\DRM\
+        FileMask: '*'
+        Recursive: true
+        Comment: "Collects DRM"
+    -
+        Name: Program Data AppV
+        Category: Scripts
+        Path: C:\ProgramData\Microsoft\AppV\
+        FileMask: '*'
+        Recursive: true
+        Comment: "Collects AppV"
+    -
+        Name: MSBuild GET
+        Category: Scripts
+        Path: C:\Program Files\MSBuild\Microsoft\
+        FileMask: '*'
+        Recursive: true
+        Comment: "Collects MSBuild"
+    -
+        Name: MSBuild GET
+        Category: Scripts
+        Path: C:\ProgramData\
+        FileMask: 'smath.exe'
+        Recursive: true
+        Comment: "Collects MSBuild"
+    -
+        Name: BTBHost GET
+        Category: Scripts
+        Path: C:\ProgramData\HP\logs\BTBHost\
+        FileMask: '*'
+        Recursive: true
+        Comment: "Collects BTBHost"
+    -
+        Name: vbs in TEmp
+        Category: Scripts
+        Path: C:\temp\
+        FileMask: '*.vbs'
+        Recursive: true
+        Comment: "Collects BTBHost"
+    -
+        Name: txt in TEmp
+        Category: Scripts
+        Path: C:\temp\
+        FileMask: '*.txt'
+        Recursive: true
+        Comment: "Collects BTBHost"
+    -
+        Name: ps1 in TEmp
+        Category: Scripts
+        Path: C:\temp\
+        FileMask: '*.ps1'
+        Recursive: true
+        Comment: "Collects BTBHost"
+    -
+        Name: ShadowPAd in Temp
+        Category: Scripts
+        Path: C:\Windows\Temp\TRIP\
+        FileMask: '*'
+        Recursive: true
+        Comment: "Collects BTBHost"
+    -
+        Name: ShadowPAd in Temp
+        Category: Scripts
+        Path: C:\Windows\Temp\RI\
+        FileMask: '*'
+        Recursive: true
+        Comment: "Collects BTBHost"
+    -
+        Name: Exe in Temp
+        Category: Scripts
+        Path: C:\Windows\ehome\
+        FileMask: '*.exe'
+        Recursive: true
+        Comment: "Collects BTBHost"

@@ -71,51 +71,162 @@ func (c *Collector) ExecuteModules() error {
 		module := &c.modules[i]
 		for j := range module.Processors {
 			processor := &module.Processors[j]
-			// Создаем выходную директорию для модуля
-			outputPath := filepath.Join(c.config.OutputPath, "Module", module.Category)
-
-			processor.CommandLine = strings.Replace(processor.CommandLine, "%kapedirectory%", ".", 1)
-			if err := os.MkdirAll(outputPath, 0755); err != nil {
-				return fmt.Errorf("error creating module output directory: %v", err)
-			}
-
-			// Создаем файл для записи результата
-			resultFileName := fmt.Sprintf("%s", processor.ExportFile)
-			resultFilePath := resultFileName
-			if resultFileName == "" {
-				resultFilePath = filepath.Join(outputPath, module.Description[:30])
+			cmd := exec.Command(processor.Executable)
+			err := cmd.Run()
+			errMsg := fmt.Sprintf("%v", err)
+			if strings.Contains(errMsg, "PATH") {
+				c.ExecuteLocalModules(module, processor)
 			} else {
-				resultFilePath = filepath.Join(outputPath, resultFileName)
+				c.ExecuteGlobalModules(module, processor)
 			}
-
-			resultFile, err := os.Create(resultFilePath)
-			if err != nil {
-				return fmt.Errorf("error creating result file: %v", err)
-			}
-			defer resultFile.Close()
-
-			// Подготавливаем команду
-			cmdLine := strings.Replace(processor.CommandLine, "%sourceDirectory%", c.config.SourcePath, -1)
-			cmdLine = strings.Replace(cmdLine, "%destinationDirectory%", outputPath, -1)
-
-			args := strings.Fields(cmdLine)
-			cmd := exec.Command(processor.Executable, args...)
-
-			// Направляем вывод только в файл
-			cmd.Stdout = resultFile
-			cmd.Stderr = resultFile
-
-			err = cmd.Run()
-			if err != nil {
-				errMsg := fmt.Sprintf("\nCommand execution failed with error: %v\n", err)
-				resultFile.WriteString(errMsg)
-			}
-
-			// Убрали вывод о успешном завершении в консоль
 		}
 	}
 
 	return nil
 }
+func (c *Collector) ExecuteGlobalModules(module *Module, processor *Processor) error {
+	// Создаем выходную директорию для модуля
+	outputPath := filepath.Join(c.config.OutputPath, "Module", module.Category)
+
+	processor.CommandLine = strings.Replace(processor.CommandLine, "%kapedirectory%", ".", 1)
+	if err := os.MkdirAll(outputPath, 0755); err != nil {
+		return fmt.Errorf("error creating module output directory: %v", err)
+	}
+
+	// Подготавливаем команду
+	cmdLine := strings.Replace(processor.CommandLine, "%sourceDirectory%", c.config.SourcePath, -1)
+	cmdLine = strings.Replace(cmdLine, "%destinationDirectory%", outputPath, -1)
+
+	// Правильная обработка командной строки для PowerShell
+	var cmd *exec.Cmd
+	if strings.Contains(processor.Executable, "powershell.exe") {
+		// Для PowerShell передаем -Command как отдельный аргумент, а затем всю команду целиком
+		cmd = exec.Command(processor.Executable, "-Command", cmdLine[10:len(cmdLine)-1]) // Удаляем внешние кавычки и префикс -Command
+	} else {
+		// Для других исполняемых файлов используем обычное разделение
+		args := strings.Fields(cmdLine)
+		cmd = exec.Command(processor.Executable, args...)
+	}
+
+	if processor.ExportFile != "" {
+		resultFileName := fmt.Sprintf("%s", processor.ExportFile)
+		resultFilePath := filepath.Join(outputPath, resultFileName)
+		resultFile, err := os.OpenFile(resultFilePath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
+		if err != nil {
+			return fmt.Errorf("error creating result file: %v", err)
+		}
+		defer resultFile.Close()
+
+		cmd.Stdout = resultFile
+		cmd.Stderr = resultFile
+	}
+
+	err := cmd.Run()
+	if err != nil {
+		errMsg := fmt.Sprintf("\nCommand execution failed with error: %v\n", err)
+		fmt.Printf(errMsg)
+	}
+
+	// Убрали вывод о успешном завершении в консоль
+	return nil
+}
+
+func (c *Collector) ExecuteLocalModules(module *Module, processor *Processor) error {
+	// Создаем выходную директорию для модуля
+	outputPath := filepath.Join(c.config.OutputPath, "Module", module.Category)
+
+	processor.CommandLine = strings.Replace(processor.CommandLine, "%kapedirectory%", ".", 1)
+	if err := os.MkdirAll(outputPath, 0755); err != nil {
+		return fmt.Errorf("error creating module output directory: %v", err)
+	}
+
+	// Создаем файл для записи результата
+	resultFileName := fmt.Sprintf("%s", processor.ExportFile)
+	resultFilePath := resultFileName
+	if resultFileName == "" {
+		resultFilePath = filepath.Join(outputPath, module.Description[:30])
+	} else {
+		resultFilePath = filepath.Join(outputPath, resultFileName)
+	}
+
+	resultFile, err := os.Create(resultFilePath)
+	if err != nil {
+		return fmt.Errorf("error creating result file: %v", err)
+	}
+	defer resultFile.Close()
+
+	// Подготавливаем команду
+	cmdLine := strings.Replace(processor.CommandLine, "%sourceDirectory%", c.config.SourcePath, -1)
+	cmdLine = strings.Replace(cmdLine, "%destinationDirectory%", outputPath, -1)
+
+	args := strings.Fields(cmdLine)
+	cmd := exec.Command(filepath.Join(".\\", c.config.PathToAllTools, processor.Executable), args...)
+
+	// Направляем вывод только в файл
+	cmd.Stdout = resultFile
+	cmd.Stderr = resultFile
+
+	err = cmd.Run()
+	if err != nil {
+		errMsg := fmt.Sprintf("\nCommand execution failed with error: %v\n", err)
+		resultFile.WriteString(errMsg)
+	}
+
+	// Убрали вывод о успешном завершении в консоль
+	return nil
+}
 
 /// END MODULE
+//
+//
+//
+//func (c *Collector) ExecuteGlobalModules(module *Module, processor *Processor) error {
+//	// Создаем выходную директорию для модуля
+//	outputPath := filepath.Join(c.config.OutputPath, "Module", module.Category)
+//
+//	processor.CommandLine = strings.Replace(processor.CommandLine, "%kapedirectory%", ".", 1)
+//	if err := os.MkdirAll(outputPath, 0755); err != nil {
+//		return fmt.Errorf("error creating module output directory: %v", err)
+//	}
+//
+//	// Создаем файл для записи результата
+//	resultFileName := fmt.Sprintf("%s", processor.ExportFile)
+//	resultFilePath := resultFileName
+//	if resultFileName == "" {
+//		if len(module.Description) > 30 {
+//			resultFilePath = filepath.Join(outputPath, module.Description[:30])
+//		} else {
+//			resultFilePath = filepath.Join(outputPath, module.Description)
+//		}
+//	} else {
+//		resultFilePath = filepath.Join(outputPath, resultFileName)
+//	}
+//
+//	resultFile, err := os.Create(resultFilePath + ".txt")
+//	if err != nil {
+//		return fmt.Errorf("error creating result file: %v", err)
+//	}
+//	defer resultFile.Close()
+//
+//	// Подготавливаем команду
+//	cmdLine := strings.Replace(processor.CommandLine, "%sourceDirectory%", c.config.SourcePath, -1)
+//	cmdLine = strings.Replace(cmdLine, "%destinationDirectory%", outputPath, -1)
+//
+//	args := strings.Fields(cmdLine)
+//	cmd := exec.Command(processor.Executable, args...)
+//
+//	// Направляем вывод только в файл
+//	cmd.Stdout = resultFile
+//	cmd.Stderr = resultFile
+//
+//	err = cmd.Run()
+//	if err != nil {
+//		errMsg := fmt.Sprintf("\nCommand execution failed with error: %v\n", err)
+//		resultFile.WriteString(errMsg)
+//	}
+//
+//	// Убрали вывод о успешном завершении в консоль
+//	return nil
+//}
+
+//Wok, но не работает со сложными командами

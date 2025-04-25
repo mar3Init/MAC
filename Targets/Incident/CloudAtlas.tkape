@@ -1,0 +1,48 @@
+Description: Collect VBS and PS1 Scripts
+Author: mars
+Version: 1.3
+Id: 42a2f9dc-a741-48e6-b293-a0509c97bb66
+RecreateDirectories: true
+Targets:
+    -
+        Name: ProgramData Scripts -  *.ps1
+        Category: Scripts
+        Path: C:\ProgramData\
+        FileMask: '*.ps1'
+        Recursive: true
+        Comment: "Collects all  and PS1 scripts from ProgramData"
+    -
+        Name: AppData Scripts -  *.ps1
+        Category: Scripts
+        Path: C:\Users\%user%\AppData\
+        FileMask: '*.ps1'
+        Recursive: true
+        Comment: "Collects all  and PS1 scripts from user AppData directories"
+    -
+        Name: SystemProfile AppData Scripts -  *.ps1
+        Category: Scripts
+        Path: C:\Windows\SysWOW64\config\systemprofile\AppData\
+        FileMask: '*.ps1'
+        Recursive: true
+        Comment: "Collects  and PS1 scripts from system profile's AppData"
+    -
+        Name: ProgramData Scripts - *.vbs
+        Category: Scripts
+        Path: C:\ProgramData\
+        FileMask: '*.vbs'
+        Recursive: true
+        Comment: "Collects all VBS and  scripts from ProgramData"
+    -
+        Name: AppData Scripts - *.vbs
+        Category: Scripts
+        Path: C:\Users\%user%\AppData\
+        FileMask: '*.vbs'
+        Recursive: true
+        Comment: "Collects all VBS and  scripts from user AppData directories"
+    -
+        Name: SystemProfile AppData Scripts - *.vbs
+        Category: Scripts
+        Path: C:\Windows\SysWOW64\config\systemprofile\AppData\
+        FileMask: '*.vbs'
+        Recursive: true
+        Comment: "Collects VBS and  scripts from system profile's AppData"

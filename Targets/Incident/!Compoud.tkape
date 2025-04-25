@@ -1,0 +1,26 @@
+Description: Get data from incident
+Author: Mars
+Version: 1.1
+Id: 83b99299-2d84-4844-af25-c727d3440b28
+RecreateDirectories: true
+Targets:
+    -
+        Name: Cloud Atlas
+        Category: Ukraine
+        Path: CloudAtlas.tkape
+    -
+        Name: Sud BO TEAM
+        Category: Ukraine
+        Path: S.tkape
+    -
+        Name: Tes te TEAM
+        Category: Ukraine
+        Path: Test.tkape
+    -
+        Name: MID 
+        Category: China
+        Path: MID.tkape
+    -
+        Name: MG 
+        Category: China
+        Path: MG.tkape

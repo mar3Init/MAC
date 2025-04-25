@@ -1,0 +1,31 @@
+Description: Mini Basic Collection
+Author: Phill Moore
+Version: 1.1
+Id: 83b99299-2d84-4844-af25-c727d3440b20
+RecreateDirectories: true
+Targets:
+    -
+        Name: Event Logs
+        Category: Event Logs
+        Path: EventLogs.tkape
+    -
+        Name: $MFT
+        Category: MasterFileTable
+        Path: $MFT.tkape
+    -
+        Name: File System
+        Category: File System
+        Path: FileSystem.tkape
+    -
+        Name: RegistryHives
+        Category: Registry Hives
+        Path: RegistryHives.tkape
+    -
+        Name: ScheduledTasks
+        Category: ScheduledTasks
+        Path: ScheduledTasks.tkape
+    -
+        Name: SUM
+        Category: SUM
+        Path: SUM.tkape
+

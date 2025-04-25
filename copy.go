@@ -77,24 +77,40 @@ func (rc *RawCopy) CopyFile(srcPath string, dstPath string) error {
 func copyFile(src, dst string) error {
 	sourceFileNameSlice := strings.Split(src, "\\")
 	var sourceFileName = sourceFileNameSlice[len(sourceFileNameSlice)-1]
+
+	// Открываем исходный файл
 	sourceFile, err := os.Open(src)
 	if err != nil {
 		return err
 	}
 	defer sourceFile.Close()
 
-	destFile, err := os.Create(dst + "\\" + string(sourceFileName))
+	// Получаем информацию о файле для сохранения временных меток
+	sourceInfo, err := sourceFile.Stat()
+	if err != nil {
+		return err
+	}
+
+	destPath := dst + "\\" + sourceFileName
+	destFile, err := os.Create(destPath)
 	if err != nil {
 		return err
 	}
 	defer destFile.Close()
 
+	// Копируем содержимое
 	_, err = io.Copy(destFile, sourceFile)
 	if err != nil {
 		return err
 	}
 
-	return destFile.Sync()
+	// Синхронизируем запись на диск
+	if err := destFile.Sync(); err != nil {
+		return err
+	}
+
+	// Сохраняем временные метки
+	return os.Chtimes(destPath, sourceInfo.ModTime(), sourceInfo.ModTime())
 }
 
 func (rc *RawCopy) fullCopy(srcPath string, dstPath string) error {
